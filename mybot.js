@@ -113,4 +113,4 @@ if (message.content.startsWith('oof')) {
 
 });
 
-client.login("NDM0MDM3OTcyNjc3OTUxNTI1.DclX6A.xFohWrnk_C8r3VkMczFVcbTpNr0");
+client.login("");
