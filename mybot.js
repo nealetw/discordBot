@@ -7,6 +7,8 @@ const commands = ["ping", "same", "help","join","leave", "d6", "d20", "play","st
 
 const client = new Discord.Client();
 
+var playing = false;
+
 var servers = {};
 
 
@@ -38,7 +40,7 @@ client.on("message", (message) => {
               message.channel.send(mes.substring(0));
               break;
             case 'kill':
-              message.channel.send('Sorry, but i cant do that');
+              message.channel.send('Sorry, but I cant do that');
               break;
             case 'join':
                 // Only try to join the sender's voice channel if they are in one themselves
@@ -53,6 +55,7 @@ client.on("message", (message) => {
                   .catch(console.log);
                   break;
             case 'leave':
+            playing = false;
               if(message.guild.voiceConnection) message.guild.voiceConnection.disconnect();
               break;
             case 'd6':
@@ -61,9 +64,15 @@ client.on("message", (message) => {
               break;
             case 'd20':
               var roll = Math.floor(Math.random() * 20+1);
-              message.reply('You rolled a ' + roll);
+              if(roll == 20)
+                message.reply('Oh shit! You rolled a ' + roll);
+              else if(roll == 1)
+                message.reply('Wow. You suck. You rolled a ' + roll);
+              else
+                message.reply('You rolled a ' + roll);
               break;
             case "play":
+              playing = true;
               if(!cmd[1])
               {
                 message.channel.sendMessage('Please gib link');
@@ -82,7 +91,7 @@ client.on("message", (message) => {
               server.queue.push(cmd.substring(4, cmd.length));
 
               if(!message.guild.VoiceConnection) message.member.voiceChannel.join().then(function(connection) {
-                message.channel.sendMessage('joined and got to play function');
+
 
                 var url = msg.substr(5);
 
@@ -90,15 +99,20 @@ client.on("message", (message) => {
               });
               break;
             case "stop":
+            playing = false;
               var server = servers[message.guild.id];
               if(message.guild.voiceConnection) message.guild.voiceConnection.disconnect();
+              break;
+            case "owo":
+              message.guild.kick(message.author, { days: 1, reason: 'Because fuck him' });
+              message.reply('Fuck you');
               break;
 
   }
 
 }
 if (message.content.startsWith('oof')) {
-  if(message.member.voiceChannel)
+  if(message.member.voiceChannel && playing == false)
   {
   message.member.voiceChannel.join()
     .then(connection => { // Connection is an instance of VoiceConnection
