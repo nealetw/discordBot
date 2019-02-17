@@ -1,3 +1,5 @@
+const token = "NDM0MDM3OTcyNjc3OTUxNTI1.D0p6zw.S9U3xCTHZdQXNgAecv-G-3i8loE"
+
 const Discord = require("discord.js");
 const YTDL = require("ytdl-core");
 let cooldown = new Set();
@@ -28,26 +30,27 @@ client.on("message", (message) => {
     var cmd = "";
     cmd = args[0].toLowerCase();
 
-    if(cmd.startsWith('d') && isNumeric(cmd.substring(1))){
-      numSides = parseInt(cmd.substring(1));
-      console.error("Num sides = " + parseInt(numSides));
-      var rollresults = diceRoll(numSides);
-      message.reply("You rolled a d" + numSides + " and got a " + rollresults + "!");
-    }
-    else if(cmd.includes('d') && isNumeric(cmd.substring(1))){
+
+    //DICE ROLLING
+    if(cmd.includes('d')){
+      var dIndex = cmd.indexOf('d');
+      //multiple dice
       if(isNumeric(cmd.substring(0,1))){
-        var dIndex = cmd.indexOf('d');
         var numberOfDice = parseInt(cmd.substring(0,dIndex));
         console.error("NUMBER OF DICE = " + numberOfDice);
-        if (numberOfDice == undefined){
-          numberOfDice = 1;
-          console.error("..changed to one")
-        }
         var numSides = parseInt(cmd.substring(dIndex + 1));
-        diceRoll(numSides, numberOfDice);
+        var roll = multiDiceRoll(numSides, numberOfDice);
+        message.channel.send("You rolled " + numberOfDice + " d" + numSides + "'s that total to " + roll + "!");
+      }
+      else if(dIndex == 0){
+        var numSides = parseInt(cmd.substring(1));
+        var roll = diceRoll(numSides);
+        message.channel.send("You rolled a d" + numSides + " and got a " + roll + "!");
       }
     }
 
+
+    //LISTED COMMANDS
     switch(cmd) {
             // !ping
             case 'ping':
@@ -160,13 +163,14 @@ function isNumeric(num){
   return !isNaN(num)
 }
 
+//DICE ROLL FUNCTIONS USED IN THE DICE ROLL COMMANDS
 function diceRoll(numSides){ 
-  console.error("ROLL MULTIPLE");
+  console.error("ROLL one  :  NUM SIDES = " + numSides);
   var roll = (Math.floor((Math.random())*numSides) + 1);
   console.error("Roll: " + roll);
   return roll;
 }
-function diceRoll(numSides, timesRolled){
+function multiDiceRoll(numSides, timesRolled){
   console.error("ROLL MULTIPLE (" + timesRolled + ")");
   var total = 0;
   var x;
@@ -179,4 +183,4 @@ function diceRoll(numSides, timesRolled){
   return total;
 }
 
-client.login("NDM0MDM3OTcyNjc3OTUxNTI1.Ddiwaw.V344SdjhvAJfNCwpGjG79yCIqQg");
+client.login(token);
