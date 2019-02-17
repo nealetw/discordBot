@@ -1,4 +1,4 @@
-const token = "NDM0MDM3OTcyNjc3OTUxNTI1.D0p6zw.S9U3xCTHZdQXNgAecv-G-3i8loE"
+const token = ""
 
 const Discord = require("discord.js");
 const YTDL = require("ytdl-core");
@@ -7,8 +7,6 @@ const globalCD = 5;
 //const Browser = require("zombie");
 
 //const dispatcher = connection.playFile('C:/Users/Discord/Desktop/myfile.mp3');
-
-const commands = ["ping", "same", "help","join","leave", "d?", "play","stop"];
 
 const client = new Discord.Client();
 
@@ -34,6 +32,7 @@ client.on("message", (message) => {
     //DICE ROLLING
     if(cmd.includes('d')){
       var dIndex = cmd.indexOf('d');
+
       //multiple dice
       if(isNumeric(cmd.substring(0,1))){
         var numberOfDice = parseInt(cmd.substring(0,dIndex));
@@ -42,6 +41,7 @@ client.on("message", (message) => {
         var roll = multiDiceRoll(numSides, numberOfDice);
         message.channel.send("You rolled " + numberOfDice + " d" + numSides + "'s that total to " + roll + "!");
       }
+      //single dice
       else if(dIndex == 0){
         var numSides = parseInt(cmd.substring(1));
         var roll = diceRoll(numSides);
@@ -50,7 +50,8 @@ client.on("message", (message) => {
     }
 
 
-    //LISTED COMMANDS
+    //LISTED COMMANDS (pls add any new commands to the array made below)
+    const commands = ["d(?)", "(?)d(?)", "ping", "same", "help", "kill","join","leave", "okaythisisepic", "play","stop", "fuckyou"];
     switch(cmd) {
             // !ping
             case 'ping':
