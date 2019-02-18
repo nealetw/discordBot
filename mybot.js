@@ -38,8 +38,13 @@ client.on("message", (message) => {
         var numberOfDice = parseInt(cmd.substring(0,dIndex));
         console.error("NUMBER OF DICE = " + numberOfDice);
         var numSides = parseInt(cmd.substring(dIndex + 1));
-        var roll = multiDiceRoll(numSides, numberOfDice);
-        message.channel.send("You rolled " + numberOfDice + " d" + numSides + "'s that total to " + roll + "!");
+        if(numberOfDice > 100){
+          message.channel.send("Dude, don't roll more than 100 dice..that's how I break.");
+        }
+        else{
+          var rolls = multiDiceRoll(numSides, numberOfDice);
+          message.channel.send("You rolled " + numberOfDice + " d" + numSides + "'s...\n Here are your rolls!\n" + rolls);
+        }
       }
       //single dice
       else if(dIndex == 0){
@@ -165,22 +170,33 @@ function isNumeric(num){
 }
 
 //DICE ROLL FUNCTIONS USED IN THE DICE ROLL COMMANDS
-function diceRoll(numSides){ 
-  console.error("ROLL one  :  NUM SIDES = " + numSides);
+function diceRoll(numSides){
+  if(numSides == 0){
+    return 0;
+  }
+  console.error("ROLL  :  NUM SIDES = " + numSides);
   var roll = (Math.floor((Math.random())*numSides) + 1);
   console.error("Roll: " + roll);
   return roll;
 }
 function multiDiceRoll(numSides, timesRolled){
-  console.error("ROLL MULTIPLE (" + timesRolled + ")");
-  var total = 0;
+  var allRolls = [];
+  if(timesRolled > 100){
+    timesRolled = 100;
+  }
+  //var total = 0;
   var x;
   for(x = 0; x < timesRolled; x++){
     var roll = diceRoll(numSides);
-    console.error("Roll total: " + roll);
-    total += roll;
+    allRolls += roll + " ";
+    //total += roll;
   }
-  console.error("Roll total: " + total);
+  console.error("Rolls : " + allRolls.toString());
+  return allRolls;
+  //return total;
+}
+function totalDice(rollsArray){
+  var total = rollsArray.reduce(function(sum, a) { return sum + a },0)/(elements.length||1);
   return total;
 }
 
