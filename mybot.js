@@ -1,4 +1,4 @@
-const token = ""
+const token = "NDM0MDM3OTcyNjc3OTUxNTI1.D0qFqg.csfvEBzYwhiWviLrPieXfsmMGJo"
 
 const Discord = require("discord.js");
 const YTDL = require("ytdl-core");
@@ -43,7 +43,7 @@ client.on("message", (message) => {
         }
         else{
           var rolls = multiDiceRoll(numSides, numberOfDice);
-          message.channel.send("You rolled " + numberOfDice + " d" + numSides + "'s...\n Here are your rolls!\n" + rolls);
+          message.channel.send("You rolled " + numberOfDice + " d" + numSides + "'s that total to " + totalDice(rolls) + "\n Here are your rolls!\n" + formatRolls(rolls));
         }
       }
       //single dice
@@ -56,7 +56,7 @@ client.on("message", (message) => {
 
 
     //LISTED COMMANDS (pls add any new commands to the array made below)
-    const commands = ["d(?)", "(?)d(?)", "ping", "same", "help", "kill","join","leave", "okaythisisepic", "play","stop", "fuckyou"];
+    const commands = ["d(?)", "(?)d(?)", "ping", "same", "help", "kill","join","leave", "okaythisisepic", "play","stop", "weeb"];
     switch(cmd) {
             // !ping
             case 'ping':
@@ -136,8 +136,8 @@ client.on("message", (message) => {
               if(message.guild.voiceConnection) message.guild.voiceConnection.disconnect();
               break;
 
-            case "fuckyou":
-              message.channel.send('fuck you jarrett');
+            case "weeb":
+              message.channel.reply('You were expecting a cute anime picture, but it was me, DIO! \n https://i.kym-cdn.com/photos/images/newsfeed/000/754/539/566.gif');
               break;
             case "somethingsomethingsomething":
               return 0;
@@ -188,7 +188,7 @@ function multiDiceRoll(numSides, timesRolled){
   var x;
   for(x = 0; x < timesRolled; x++){
     var roll = diceRoll(numSides);
-    allRolls += roll + " ";
+    allRolls.push(roll);
     //total += roll;
   }
   console.error("Rolls : " + allRolls.toString());
@@ -196,8 +196,21 @@ function multiDiceRoll(numSides, timesRolled){
   //return total;
 }
 function totalDice(rollsArray){
-  var total = rollsArray.reduce(function(sum, a) { return sum + a },0)/(elements.length||1);
+  var total = 0;
+  for(var x = 0; x < rollsArray.length; x++){
+    total += parseInt(rollsArray[x]);
+  }
   return total;
+}
+function formatRolls(rollsArray){
+  var returnArray = [];
+  for(var x = 0; x < rollsArray.length; x++){
+    if(x == (rollsArray.length-1))
+      returnArray += rollsArray[x];
+    else
+      returnArray += rollsArray[x] + ", ";
+  }
+  return returnArray;
 }
 
 client.login(token);
