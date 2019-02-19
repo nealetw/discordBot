@@ -1,4 +1,4 @@
-const token = "NDM0MDM3OTcyNjc3OTUxNTI1.D0qFqg.csfvEBzYwhiWviLrPieXfsmMGJo"
+const token = ""
 
 const Discord = require("discord.js");
 const YTDL = require("ytdl-core");
@@ -18,6 +18,7 @@ var servers = {};
 client.on("ready", () => {
   console.log("I am ready!");
   console.log(`Logged in as ${client.user.tag}!`);
+  client.user.setActivity("Type !help for commands!", {type:"STREAMING"});
 });
 
 client.on("message", (message) => {
@@ -56,7 +57,7 @@ client.on("message", (message) => {
 
 
     //LISTED COMMANDS (pls add any new commands to the array made below)
-    const commands = ["d(?)", "(?)d(?)", "ping", "same", "help", "kill","join","leave", "okaythisisepic", "play","stop", "weeb"];
+    const commands = ["help","d(?)", "(?)d(?)","say", "ping", "same", "kill","join","leave", "okaythisisepic", "play","stop", "weeb"];
     switch(cmd) {
             // !ping
             case 'ping':
@@ -141,6 +142,14 @@ client.on("message", (message) => {
               break;
             case "somethingsomethingsomething":
               return 0;
+            case "say":
+              try{
+                message.channel.send(cmd.substring(4));
+                break;
+              }
+              catch{
+                break;
+              }
 
   }
 
